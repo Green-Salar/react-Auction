@@ -118,3 +118,63 @@
   height: 12px; /* Height of the active dot */
   opacity: 1; /* Active dot is fully opaque */
 }
+
+/* Additional styles for PostItemForm */
+form {
+  padding: 20px;
+  background: #f9f9f9;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+form label {
+  font-weight: bold;
+}
+
+form input,
+form textarea,
+form button {
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+form button {
+  background-color: #007bff;
+  color: white;
+}
+/* Navbar Styles */
+.navbar {
+  background-color: #343a40 !important; /* Dark background */
+  padding: 0.5rem 1rem;
+}
+
+.navbar-brand {
+  font-size: 1.5rem; /* Larger brand font */
+  font-weight: bold;
+  color: #ffffff !important;
+}
+
+.navbar-nav .nav-link {
+  font-size: 1.1rem;
+  color: #dddddd !important; /* Lighter text color for contrast */
+  margin: 0 0.5rem;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #ffffff !important; /* Change color on hover */
+}
+
+/* Adjustments for mobile view */
+@media (max-width: 991px) {
+  .navbar-nav {
+      text-align: center;
+  }
+
+  .navbar-nav .nav-link {
+      padding: 0.5rem 1rem;
+  }
+
+  .navbar-brand {
+      padding: 0.5rem 0;
+  }
+}
