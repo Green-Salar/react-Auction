@@ -1,26 +1,79 @@
 [
   {
     "id": 1,
-    "title": "Item One",
-    "image": "https://via.placeholder.com/150",
-    "description": "This is item one description"
+    "title": "Vintage Clock",
+    "images": [
+      "https://via.placeholder.com/150"
+    ],
+    "description": "A rare vintage clock from the 19th century.",
+    "status": "Ongoing",
+    "badges": ["Antique", "Rare"],
+    "location": "London, UK",
+    "auctionTime": "2024-02-03T14:00:00",
+    "prices": {
+      "startBid": "$500",
+      "lastBid": "$800",
+      "estimated": "$1200",
+      "infoLink": "https://example.com/clock-info"
+    }
   },
   {
     "id": 2,
-    "title": "Item Two",
-    "image": "https://via.placeholder.com/150",
-    "description": "This is item two description"
+    "title": "Classic Painting",
+    "images": [
+      "https://via.placeholder.com/150",
+      "https://via.placeholder.com/150/0000FF"
+    ],
+    "description": "An original classic painting, artist unknown.",
+    "status": "Preview",
+    "badges": ["Classic", "Verified"],
+    "location": "Paris, France",
+    "auctionTime": "2024-03-10T18:00:00",
+    "prices": {
+      "startBid": "$1500",
+      "lastBid": "$2500",
+      "estimated": "$3500",
+      "infoLink": "https://example.com/painting-info"
+    }
   },
   {
     "id": 3,
-    "title": "Item Three",
-    "image": "https://via.placeholder.com/150",
-    "description": "This is item three description"
+    "title": "Vintage Guitar",
+    "images": [
+      "https://via.placeholder.com/150",
+      "https://via.placeholder.com/150/FF0000",
+      "https://via.placeholder.com/150/FFFF00"
+    ],
+    "description": "A vintage guitar from the 1960s, in excellent condition.",
+    "status": "Upcoming",
+    "badges": ["Vintage", "Excellent Condition"],
+    "location": "Nashville, USA",
+    "auctionTime": "2024-04-15T20:00:00",
+    "prices": {
+      "startBid": "$800",
+      "lastBid": "$1200",
+      "estimated": "$1800",
+      "infoLink": "https://example.com/guitar-info"
+    }
   },
   {
     "id": 4,
-    "title": "Item Four",
-    "image": "https://via.placeholder.com/150",
-    "description": "This is item four description"
+    "title": "Diamond Ring",
+    "images": [
+      "https://via.placeholder.com/150",
+      "https://via.placeholder.com/150/FF0000",
+      "https://via.placeholder.com/150/FFFF00"
+    ],
+    "description": "An exquisite diamond ring, over 4 carats.",
+    "status": "Closed",
+    "badges": ["Luxury", "4 Carats"],
+    "location": "New York, USA",
+    "auctionTime": "2024-01-22T12:00:00",
+    "prices": {
+      "startBid": "$5000",
+      "lastBid": "$7500",
+      "estimated": "$10000",
+      "infoLink": "https://example.com/diamondring-info"
+    }
   }
 ]

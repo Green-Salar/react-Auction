@@ -36,3 +36,85 @@
     transform: rotate(360deg);
   }
 }
+.icons {
+  margin-bottom: 10px;
+}
+
+.icons > * {
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.buttons > * {
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+/* Mobile styles */
+@media (max-width: 576px) {
+  .auction-card {
+    padding: 10px;
+    font-size: 14px;
+  }
+}
+
+/* Tablet styles */
+@media (min-width: 577px) and (max-width: 768px) {
+  .auction-card {
+    padding: 15px;
+    font-size: 16px;
+  }
+}
+
+/* Desktop styles */
+@media (min-width: 769px) {
+  .auction-card {
+    padding: 20px;
+    font-size: 18px;
+  }
+}
+
+/* Add other styles as needed */
+.auction-card .card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.auction-card .icons {
+  display: flex;
+  gap: 10px; /* Adjust space between icons as needed */
+}
+
+/* You may adjust the size of the icons */
+.auction-card .icons > * {
+  cursor: pointer;
+  font-size: 1.2em; /* Adjust icon size as needed */
+}
+
+.auction-card .auction-time {
+  font-weight: bold;
+  color: #007bff; /* Or any color that fits your design */
+  margin: 0.5rem 0;
+}
+.auction-card .badge {
+  margin-right: 5px; /* Space between badges horizontally */
+  margin-bottom: 5px; /* Space between badges vertically */
+  padding: 1em 0.6em; /* Padding inside each badge */
+}
+
+/* Carousel Indicator Styles */
+.auction-card .carousel-indicators li {
+  background-color: white; /* Color of the inactive indicator dots */
+  width: 10px; /* Width of the dots */
+  height: 10px; /* Height of the dots */
+  border-radius: 50%; /* Make the dots round */
+  margin: 0 2px; /* Spacing between dots */
+  opacity: 0.5; /* Make inactive dots less prominent */
+}
+
+.auction-card .carousel-indicators .active {
+  background-color: white; /* Color of the active indicator dot */
+  width: 12px; /* Width of the active dot */
+  height: 12px; /* Height of the active dot */
+  opacity: 1; /* Active dot is fully opaque */
+}
