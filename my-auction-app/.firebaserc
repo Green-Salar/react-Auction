@@ -1,0 +1,11 @@
+{
+  "projects": {
+    "default": "rudebid-7b29d"
+  },
+  "targets": {},
+  "etags": {
+    "rudebid-7b29d": {
+      "extensionInstances": {}
+    }
+  }
+}
