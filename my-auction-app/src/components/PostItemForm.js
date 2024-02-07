@@ -1,9 +1,25 @@
-import React, { useState } from 'react';
+
 import { useNavigate } from 'react-router-dom';
 import { Form, Button, Col, Row, Image, Container } from 'react-bootstrap';
-
+import { auth } from '../firebase';
+import React, { useState, useEffect } from 'react';
+import { postItem } from './firebaseServices'; 
 const PostItemForm = () => {
   const navigate = useNavigate();
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        setUser(user);
+      } else {
+        // User is not signed in or session ended.
+        navigate('/login'); // redirect to login page
+      }
+    });
+
+    return unsubscribe; // unsubscribe on unmount
+  }, [navigate]);
   const currencies = ['USD', 'EUR', 'GBP', 'JPY', 'CAD'];
   const [item, setItem] = useState({
     title: '',    currency: 'USD', // Default currency
@@ -19,14 +35,8 @@ const PostItemForm = () => {
     badges: [],
     location: '',
     auctionTime: '',
-    
-    currency: 'USD', 
-    prices: {
-      startBid: '',
-      lastBid: '',
-      estimated: '',
-      infoLink: ''
-    }
+    category: '',
+
   });
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -38,17 +48,41 @@ const PostItemForm = () => {
   };
 
   const handleImageChange = (e) => {
-    const files = Array.from(e.target.files);
-    const imagesPreviewUrls = files.map(file => URL.createObjectURL(file));
-    setItem({ ...item, images: imagesPreviewUrls });
+    const files = e.target.files;
+    const uploadedImages = [];
+  
+    // Loop through each selected file
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const reader = new FileReader();
+  
+      // Read the file as a data URL for preview
+      reader.readAsDataURL(file);
+  
+      // Store the file object for upload
+      uploadedImages.push(file);
+    }
+  
+    // Update the state with the preview URLs and file objects
+    setItem({ ...item, images: [...item.images, ...uploadedImages] });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(item);
-    // TODO: Validate and process form data
-    // TODO: Send data to the server or API
-    navigate('/'); // Redirect to the home page after posting
+  
+    if (!user) {
+      console.error('No user logged in!');
+      return;
+    }
+  
+    try {
+      // Call postItem instead of directly interacting with Firestore here
+      await postItem(item, user.uid);
+      console.log('Item posted successfully');
+      navigate('/'); // Redirect to the home page after posting
+    } catch (error) {
+      console.error('Error posting item:', error);
+    }
   };
 
   return (
@@ -133,6 +167,24 @@ const PostItemForm = () => {
           </Col>
         </Form.Group>
 
+        <Form.Group as={Row} className="mb-3">
+          <Form.Label column sm="2">Category:</Form.Label>
+          <Col sm="10">
+            <Form.Control
+              as="select"
+              name="category"
+              value={item.category}
+              onChange={handleInputChange}
+              required
+            >
+              <option value="">Select a Category</option>
+              {<option key={"car cat1"} value={"carcat2"}>
+                  {"Car3"}
+                </option>}
+            </Form.Control>
+          </Col>
+        </Form.Group>
+
         {/* Prices */}
         
         {/* Currency Selection */}
@@ -153,27 +205,59 @@ const PostItemForm = () => {
             </Form.Select>
           </Col>
         </Form.Group>
-        {/* Start Bid */}
+        
+        {/* Starting Bid */}
         <Form.Group as={Row} className="mb-3">
-          <Form.Label column sm="2">Start Bid:</Form.Label>
+          <Form.Label column sm="2">Starting Bid:</Form.Label>
           <Col sm="10">
             <Form.Control
-              type="text"
-              name="startBid"
-              value={item.prices.startBid}
+              type="number"
+              name="startingBid"
+              value={item.startingBid}
               onChange={handleInputChange}
-              required
+              placeholder="Enter starting bid"
+              
             />
           </Col>
         </Form.Group>
-        {/* Last Bid */}
+
+        {/* Bid Increment */}
         <Form.Group as={Row} className="mb-3">
-          <Form.Label column sm="2">Last Bid:</Form.Label>
+          <Form.Label column sm="2">Bid Increment:</Form.Label>
           <Col sm="10">
             <Form.Control
-              type="text"
-              name="lastBid"
-              value={item.prices.lastBid}
+              type="number"
+              name="bidIncrement"
+              value={item.bidIncrement}
+              onChange={handleInputChange}
+              placeholder="Enter bid increment"
+              
+            />
+          </Col>
+        </Form.Group>
+
+        {/* Auction Start Time */}
+        <Form.Group as={Row} className="mb-3">
+          <Form.Label column sm="2">Auction Start:</Form.Label>
+          <Col sm="10">
+            <Form.Control
+              type="datetime-local"
+              name="auctionStart"
+              value={item.auctionStart}
+              onChange={handleInputChange}
+              
+            />
+          </Col>
+        </Form.Group>
+
+        {/* Auction End Time */}
+        <Form.Group as={Row} className="mb-3">
+          <Form.Label column sm="2">Auction End:</Form.Label>
+          <Col sm="10">
+            <Form.Control
+              type="datetime-local"
+              name="auctionEnd"
+              value={item.auctionEnd}
               onChange={handleInputChange}
               required
             />
@@ -188,7 +272,7 @@ const PostItemForm = () => {
               name="estimated"
               value={item.prices.estimated}
               onChange={handleInputChange}
-              required
+              
             />
           </Col>
         </Form.Group>
@@ -201,29 +285,27 @@ const PostItemForm = () => {
               name="infoLink"
               value={item.prices.infoLink}
               onChange={handleInputChange}
-              required
+               
             />
           </Col>
         </Form.Group>
 
         {/* Badges */}
         <Form.Group as={Row} className="mb-3">
-          <Form.Label column sm="2">Currency:</Form.Label>
+          <Form.Label column sm="2">Badges:</Form.Label>
           <Col sm="10">
-            <Form.Select
-              name="currency"
-              value={item.currency}
+            <Form.Control
+              type="text"
+              name="badges"
+              value={item.badges}
               onChange={handleInputChange}
-              required
-            >
-              {currencies.map(currency => (
-                <option key={currency} value={currency}>
-                  {currency}
-                </option>
-              ))}
-            </Form.Select>
+              placeholder="Enter badges separated by commas"
+             
+            />
           </Col>
         </Form.Group>
+        
+
         {/* Status Toggle */}
         <Form.Group as={Row} className="mb-3">
           <Form.Label column sm="2">Status:</Form.Label>
@@ -239,6 +321,8 @@ const PostItemForm = () => {
             />
           </Col>
         </Form.Group>
+        
+
 
         <Button variant="primary" type="submit">Post Item</Button>
       </Form>

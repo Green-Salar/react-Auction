@@ -3,6 +3,7 @@ import { Card, Badge, Button,   Carousel} from 'react-bootstrap';
 import { FaHeart, FaBell, FaShareAlt, FaEnvelope, FaChevronLeft, FaChevronRight , FaTag } from 'react-icons/fa';
 import { format, formatDistanceToNow } from 'date-fns';
 
+import PropTypes from 'prop-types';
 
 const AuctionCard = ({ item }) => {
   const [isFavorite, setIsFavorite] = useState(false);
@@ -39,9 +40,13 @@ const AuctionCard = ({ item }) => {
         <div><strong>Status:</strong> {item.status}</div>
         <div>
           <strong>Badges:</strong>
-          {item.badges.map((badge, index) => (
-            <Badge bg="secondary" key={index}>{badge}</Badge>
-          ))}
+          {Array.isArray(item.badges) && item.badges.length > 0 ? (
+            item.badges.map((badge, index) => (
+              <Badge bg="secondary" key={index}>{badge}</Badge>
+            ))
+          ) : (
+            <span>No badges available</span>
+          )}
         </div>
         <div><strong>Location:</strong> {item.location}</div>
         <div className="auction-time">
@@ -69,6 +74,24 @@ const AuctionCard = ({ item }) => {
       </Card.Body>
     </Card>
   );
+  
 }
 
 export default AuctionCard;
+AuctionCard.propTypes = {
+  item: PropTypes.shape({
+    auctionTime: PropTypes.string.isRequired,
+    images: PropTypes.arrayOf(PropTypes.string).isRequired,
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    status: PropTypes.string.isRequired,
+    badges: PropTypes.arrayOf(PropTypes.string).isRequired,
+    location: PropTypes.string.isRequired,
+    prices: PropTypes.shape({
+      startBid: PropTypes.number.isRequired,
+      lastBid: PropTypes.number.isRequired,
+      estimated: PropTypes.number.isRequired,
+      infoLink: PropTypes.string.isRequired
+    }).isRequired
+  }).isRequired
+};
